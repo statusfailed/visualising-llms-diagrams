@@ -9,4 +9,4 @@ Residual layers:
 
 Attention layers:
 
-![attention layer](./images/residual.svg)
+![attention layer](./images/attention.svg)
