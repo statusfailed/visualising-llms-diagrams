@@ -6,7 +6,7 @@ use open_hypergraphs::lax::{OpenHypergraph, functor::*, var, var::Var};
 pub fn main() -> std::io::Result<()> {
     let arrow = residual_arrow();
     let arrow = var::forget::Forget.map_arrow(&arrow);
-    save_svg(&arrow, "images/residual.svg")
+    crate::util::save_svg(&arrow, "images/residual.svg")
 }
 
 // A residual layer
@@ -39,35 +39,4 @@ fn residual_arrow() -> OpenHypergraph<NdArrayType, Operation> {
         (vec![x], vec![y])
     })
     .unwrap()
-}
-
-// Save only using tensor shapes
-fn save_svg<P: AsRef<std::path::Path>>(
-    arrow: &OpenHypergraph<NdArrayType, Operation>,
-    filename: P,
-) -> std::io::Result<()> {
-    use graphviz_rust::{
-        cmd::{CommandArg, Format},
-        exec,
-        printer::PrinterContext,
-    };
-
-    // Only show shapes on plots
-    let opts = open_hypergraphs_dot::Options::<NdArrayType, _> {
-        node_label: Box::new(|n| format!("{:?}", n.shape.0)),
-        ..Default::default()
-    };
-    let dot_graph = open_hypergraphs_dot::generate_dot_with(arrow, &opts);
-
-    use graphviz_rust::printer::DotPrinter;
-    println!("{}", dot_graph.print(&mut PrinterContext::default()));
-
-    let png_bytes = exec(
-        dot_graph,
-        &mut PrinterContext::default(),
-        vec![CommandArg::Format(Format::Svg)],
-    )?;
-    std::fs::write(filename, png_bytes)?;
-
-    Ok(())
 }
