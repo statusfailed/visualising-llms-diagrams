@@ -1,0 +1,10 @@
+[package]
+name = "visualising-llms-diagrams"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+catgrad = "0.1.0"
+graphviz-rust = "0.9.5"
+open-hypergraphs = "0.2.1"
+open-hypergraphs-dot = "0.2.1"
